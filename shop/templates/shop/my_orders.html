@@ -1,0 +1,35 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<h2>My Orders</h2>
+{% if orders %}
+    <ul>
+        {% for order in orders %}
+            <li>
+                Order placed on <span class="order-time" data-time="{{ order.completed_at|date:'c' }}">{{ order.completed_at }}</span>:
+                <ul>
+                    {% for item in order.completedcartitem_set.all %}
+                        <li>{{ item.item.name }} - Quantity: {{ item.quantity }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have no orders.</p>
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const orderTimes = document.querySelectorAll('.order-time');
+        orderTimes.forEach(function(orderTime) {
+            const utcTime = orderTime.getAttribute('data-time');
+            const localTime = new Date(utcTime).toLocaleString();
+            orderTime.textContent = localTime;
+        });
+    });
+</script>
+
+{% endblock %}

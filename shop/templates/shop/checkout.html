@@ -1,0 +1,20 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h2>Checkout</h2>
+{% if cart.cartitem_set.all %}
+    <ul>
+        {% for cart_item in cart.cartitem_set.all %}
+            <li>{{ cart_item.item.name }} - {{ cart_item.quantity }}</li>
+        {% endfor %}
+    </ul>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm Checkout</button>
+    </form>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}

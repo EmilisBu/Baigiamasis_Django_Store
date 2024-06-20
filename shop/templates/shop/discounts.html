@@ -1,0 +1,33 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Discounts{% endblock %}
+
+{% block content %}
+<h2>Discounts</h2>
+<div class="row">
+    {% for item in items %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                {% else %}
+                    <img src="{% static 'shop/images/default_product.jpg' %}" class="card-img-top" alt="{{ item.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    {% if item.is_discount %}
+                        <p class="card-text"><del>Price: ${{ item.price }}</del></p>
+                        <p class="card-text">Discounted Price: ${{ item.discount_price }}</p>
+                    {% else %}
+                        <p class="card-text">Price: ${{ item.price }}</p>
+                    {% endif %}
+                    <p class="card-text">Quantity: {{ item.quantity }}</p>
+                    <a href="{% url 'add_to_cart' item.id %}?next={% url 'discounts' %}" class="btn btn-custom">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
